@@ -108,27 +108,34 @@ export async function createCheckout(lines: BagLine[]) {
       throw new Error("Quantity must be from 1 to 4.");
     }
     const found = await storefront<{
-      product: { variants: { nodes: VariantNode[] } } | null;
+      product: { variants: { pageInfo: { hasNextPage: boolean }; nodes: VariantNode[] } } | null;
     }>(
       `query Product($handle: String) {
         product(handle: $handle) {
           variants(first: 50) {
+            pageInfo { hasNextPage }
             nodes { id title selectedOptions { name value } }
           }
         }
       }`,
       { handle: line.handle },
     );
-    const nodes = found.data?.product?.variants.nodes ?? [];
+    const connection = found.data?.product?.variants;
+    const nodes = connection?.nodes ?? [];
+    if (connection?.pageInfo.hasNextPage) {
+      throw new Error(`${product.name} has more variants than checkout can match. Nothing was ordered.`);
+    }
     if (!nodes.length) {
       throw new Error(`${product.name} is not in the Shopify catalogue yet. Use the handle ${line.handle}.`);
     }
-    const sized = nodes.find((node) =>
-      node.selectedOptions.some(
-        (option) => option.name.toLowerCase() === "size" && option.value.toLowerCase() === line.size.toLowerCase(),
-      ),
-    );
-    const variant = sized ?? (nodes.length === 1 ? nodes[0] : undefined);
+    const wanted = line.size.toLowerCase();
+    const sizeOf = (node: VariantNode) =>
+      node.selectedOptions.find((option) => option.name.toLowerCase() === "size")?.value.toLowerCase();
+    const sized = nodes.find((node) => sizeOf(node) === wanted || node.title.toLowerCase() === wanted);
+    const only = nodes.length === 1 ? nodes[0] : undefined;
+    const onlyIsDefault =
+      only && !sizeOf(only) && !sizes.some((size) => size.toLowerCase() === only.title.toLowerCase());
+    const variant = sized ?? (onlyIsDefault ? only : undefined);
     if (!variant) {
       throw new Error(`${product.name} has no Shopify variant for size ${line.size}.`);
     }
