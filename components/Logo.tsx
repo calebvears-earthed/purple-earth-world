@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const sources = {
   lockup: "/brand/logo/purple-earth-luminous-globe-transparent.svg",
-  "lockup-reverse": "/brand/logo/purple-earth-luminous-globe-reverse.svg",
+  "lockup-reverse": "/brand/logo/lockup-reverse.png",
   wordmark: "/brand/logo/purple-earth-wordmark.svg",
   "wordmark-reverse": "/brand/logo/purple-earth-wordmark-reverse.svg",
   symbol: "/brand/logo/purple-earth-symbol.svg",

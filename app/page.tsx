@@ -1,56 +1,81 @@
 import Link from "next/link";
-import { ProductTile } from "@/components/ProductTile";
-import { products, rituals, sharedFacts } from "@/lib/catalog";
+import { Hero } from "@/components/Hero";
+import { ProductCard } from "@/components/ProductCard";
+import { Reveal } from "@/components/Reveal";
+import { CampaignImage } from "@/components/CampaignImage";
+import { campaign, products } from "@/lib/catalog";
 
 export default function HomePage() {
+  const ordered = [
+    "dusk-mock-neck-crew",
+    "ground-hoodie",
+    "mineral-barrel-pant",
+    "ground-jogger",
+    "dusk-boxy-tee",
+    "ritual-crop-tank",
+    "earth-biker-short",
+  ]
+    .map((handle) => products.find((product) => product.handle === handle))
+    .filter((product) => product !== undefined);
+  const [lead, ...rest] = ordered;
+
   return (
     <>
-      <section className="hero">
-        <p className="kicker">Drop 01</p>
-        <h1>Pre-order the first seven.</h1>
-        <p className="lede">Fourteen days. Numbered. Ritual wear from Adelaide, cut in aubergine.</p>
-        <p className="ship-line">{sharedFacts.ship}</p>
-        <a className="action" href="#drop">
-          See the seven
-        </a>
+      <Hero />
+
+      <section className="band" aria-label="Dunes">
+        <div className="band-frame">
+          <CampaignImage frame={campaign.dunes} sizes="100vw" />
+        </div>
+        <p className="band-caption">Dunes. Lilac tank, charcoal short.</p>
+      </section>
+
+      <section className="manifesto">
+        <Reveal className="manifesto-copy">
+          <h2>Clothes for the quieter hours.</h2>
+          <p>Drop 01 is a small capsule in lilac, mauve, bone, mist and one deep aubergine.</p>
+          <p>Made to be worn at dawn, on a long walk, and for the rest of the day after. From family, in South Australia.</p>
+        </Reveal>
+        <Reveal className="manifesto-photo" delay={80}>
+          <div className="manifesto-frame">
+            <CampaignImage frame={campaign.fleece} sizes="(min-width: 900px) 42vw, 100vw" />
+          </div>
+        </Reveal>
       </section>
 
       <section className="section" id="drop">
-        <p className="kicker">The drop</p>
-        <h2>Seven pieces.</h2>
-        <p className="muted">Pre-order prices in Australian dollars. Register a size on each piece. Payment opens when checkout is connected.</p>
-        <div className="grid products">
-          {products.map((product) => (
-            <ProductTile key={product.handle} product={product} />
+        <Reveal>
+          <p className="kicker">The drop</p>
+          <h2>Seven pieces.</h2>
+          <p className="muted">Pre-order prices in Australian dollars. Register a size on the piece. Payment opens when checkout is connected.</p>
+        </Reveal>
+        <div className="edit-grid">
+          {lead ? (
+            <Reveal className="edit-lead">
+              <ProductCard product={lead} large priority />
+            </Reveal>
+          ) : null}
+          {rest.map((product, index) => (
+            <Reveal key={product.handle} delay={index * 70}>
+              <ProductCard product={product} priority={index < 2} />
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="section white">
-        <p className="kicker">The idea</p>
-        <p className="pull">I spend my days making sure high voltage finds its way safely to earth. Purple Earth is the slower version of that, for people.</p>
-        <div className="prose">
-          <p>The pieces in Drop 01 are clothes. They do not connect a person to the earth, and they are not a treatment.</p>
+      <section className="teaser">
+        <div className="teaser-head">
+          <p className="kicker">Lookbook</p>
+          <h2>Dawn, Drop 01.</h2>
+          <Link href="/lookbook">Open the lookbook</Link>
         </div>
-        <p className="byline">Caleb. Adelaide.</p>
-      </section>
-
-      <section className="section">
-        <p className="kicker">Journal</p>
-        <h2>Three notes.</h2>
-        <ul className="list">
-          {rituals.map((ritual) => (
-            <li key={ritual.slug}>
-              <Link href={`/rituals/${ritual.slug}`}>
-                <h3>{ritual.title}</h3>
-                <span>{ritual.standfirst}</span>
-              </Link>
-            </li>
+        <div className="teaser-row">
+          {campaign.lookbook.map((frame) => (
+            <Link href="/lookbook" key={frame.src} className="teaser-frame">
+              <CampaignImage frame={frame} sizes="(min-width: 800px) 33vw, 80vw" />
+            </Link>
           ))}
-        </ul>
-        <p className="links">
-          <Link href="/club">The club and the walks</Link>
-        </p>
+        </div>
       </section>
     </>
   );

@@ -1,81 +1,202 @@
+export type Frame = { src: string; alt: string; width: number; height: number };
+
+export type Colourway = {
+  id: string;
+  name: string;
+  swatch: string;
+  images: Frame[];
+};
+
 export type Product = {
   handle: string;
   name: string;
   priceAud: number;
   story: string;
+  cloth: string;
   fit: string;
   pairsWith: string[];
-  image?: { src: string; alt: string; width: number; height: number };
+  colourways: Colourway[];
 };
+
+const portrait = (file: string, alt: string): Frame => ({
+  src: `/campaign/${file}`,
+  alt,
+  width: 864,
+  height: 1152,
+});
+
+const wide = (file: string, alt: string): Frame => ({
+  src: `/campaign/${file}`,
+  alt,
+  width: 1280,
+  height: 720,
+});
 
 export const sizes = ["XS", "S", "M", "L", "XL"] as const;
 export type Size = (typeof sizes)[number];
+
+const none: Frame[] = [];
 
 export const products: Product[] = [
   {
     handle: "ground-hoodie",
     name: "Ground Hoodie",
     priceAud: 149,
-    story:
-      "A hooded sweat in aubergine. Relaxed through the body, with a rib at the cuff and the hem.",
-    fit: "Relaxed body. The hem sits at the hip on the sample block. A measured size guide is not ready.",
-    pairsWith: ["ground-jogger"],
+    cloth: "Oversized fleeced hoodie, 350 gsm.",
+    story: "An oversized fleeced hoodie at 350 gsm. Relaxed through the body, with a rib at the cuff and the hem.",
+    fit: "Relaxed body. A measured size guide is not ready. Labels run XS to XL.",
+    pairsWith: ["ground-jogger", "mineral-barrel-pant"],
+    colourways: [
+      {
+        id: "dusk-mauve",
+        name: "Dusk Mauve",
+        swatch: "#A98FA6",
+        images: [
+          portrait("ground-hoodie-dusk-mauve-01.jpg", "Woman in the Dusk Mauve Ground Hoodie and taupe barrel pants, standing on a salt lake at dawn."),
+          portrait("detail-hoodie-fleece-01.jpg", "Hands in the pocket of the Dusk Mauve Ground Hoodie, showing the fleece."),
+          wide("hero-01.jpg", "Two figures at dawn on a salt lake, one in the Dusk Mauve Ground Hoodie."),
+        ],
+      },
+      {
+        id: "mist-grey",
+        name: "Mist Grey",
+        swatch: "#D4D4D9",
+        images: [
+          portrait("mist-grey-fleece-set-01.jpg", "The Mist Grey fleece set, hoodie and jogger, worn together."),
+          portrait("movement-walk-01.jpg", "A walk in the Mist Grey fleece."),
+        ],
+      },
+    ],
   },
   {
     handle: "dusk-mock-neck-crew",
     name: "Dusk Mock-Neck Crew",
     priceAud: 139,
-    story: "A mock neck sweat with a short body. Close at the neck, easy below.",
-    fit: "Close at the neck, straight through the body. A measured size guide is not ready.",
-    pairsWith: ["mineral-barrel-pant"],
+    cloth: "350 gsm fleece, women's fit, mock neck.",
+    story: "A 350 gsm fleece with a mock neck, cut as a women's fit. Close at the neck, easy through the body.",
+    fit: "Women's fit. Mock neck, not a full turtleneck. A measured size guide is not ready.",
+    pairsWith: ["ground-jogger"],
+    colourways: [
+      {
+        id: "aubergine",
+        name: "Aubergine",
+        swatch: "#2B1830",
+        images: [
+          portrait("dusk-mock-neck-crew-aubergine-01.jpg", "Woman in the aubergine Dusk Mock-Neck Crew and espresso joggers on the salt lake."),
+          portrait("lookbook-aubergine-01.jpg", "A closer frame of the aubergine Dusk Mock-Neck Crew at dawn."),
+          wide("hero-01.jpg", "The aubergine mock neck beside the Dusk Mauve hoodie, at dawn."),
+        ],
+      },
+      { id: "lilac", name: "Lilac", swatch: "#DCD0EA", images: none },
+    ],
   },
   {
     handle: "ground-jogger",
     name: "Ground Jogger",
     priceAud: 129,
-    story: "A tapered jogger with a rib at the ankle. Cut to sit with the Ground Hoodie.",
+    cloth: "Heavyweight fleece jogger.",
+    story: "A heavyweight fleece jogger with a rib at the ankle. The Mist Grey jogger is worn as a set with the Mist Grey hoodie.",
     fit: "Tapered leg, rib ankle. A measured size guide is not ready.",
     pairsWith: ["ground-hoodie"],
+    colourways: [
+      {
+        id: "mist-grey",
+        name: "Mist Grey",
+        swatch: "#D4D4D9",
+        images: [
+          portrait("mist-grey-fleece-set-01.jpg", "Mist Grey hoodie and Ground Jogger worn as a set."),
+          portrait("movement-walk-01.jpg", "Movement frame of the Mist Grey fleece."),
+        ],
+      },
+      { id: "espresso", name: "Espresso", swatch: "#544028", images: none },
+    ],
   },
   {
     handle: "mineral-barrel-pant",
     name: "Mineral Barrel Pant",
     priceAud: 159,
-    story:
-      "A barrel leg pant. Full through the thigh, narrower at the hem. The heavier piece in the drop.",
+    cloth: "100 percent cotton, 320 gsm, mineral wash, barrel leg.",
+    story: "A barrel leg in 100 percent cotton, 320 gsm, with a mineral wash. Full through the thigh, narrower at the hem.",
     fit: "Full thigh, narrower hem. A measured size guide is not ready.",
-    pairsWith: ["dusk-mock-neck-crew"],
+    pairsWith: ["ground-hoodie", "dusk-boxy-tee"],
+    colourways: [
+      {
+        id: "taupe",
+        name: "Taupe",
+        swatch: "#BDAD95",
+        images: [
+          portrait("mineral-barrel-pant-taupe-01.jpg", "Taupe Mineral Barrel Pant with the bone boxy tee."),
+          portrait("detail-barrel-pant-01.jpg", "Close frame of the taupe barrel pant and the mineral wash."),
+          wide("hero-01.jpg", "The taupe barrel pant worn with the Dusk Mauve hoodie on the salt lake."),
+        ],
+      },
+      { id: "charcoal", name: "Charcoal", swatch: "#52524F", images: none },
+    ],
   },
   {
     handle: "dusk-boxy-tee",
     name: "Dusk Boxy Tee",
     priceAud: 79,
-    story:
-      "A boxy short sleeve tee with a dropped shoulder and a straight hem. The mark sits on the left chest, as on the sample.",
+    cloth: "Boxy tee, 220 gsm.",
+    story: "A boxy tee at 220 gsm. Dropped shoulder and a straight hem.",
     fit: "Dropped shoulder, straight hem, boxy body. A measured size guide is not ready.",
-    pairsWith: ["earth-biker-short"],
-    image: {
-      src: "/products/dusk-boxy-tee.jpg",
-      alt: "Sample photograph of the Dusk Boxy Tee. An aubergine short sleeve tee on a bone cloth ground, with the Purple Earth mark on the left chest.",
-      width: 1600,
-      height: 1600,
-    },
+    pairsWith: ["mineral-barrel-pant", "earth-biker-short"],
+    colourways: [
+      {
+        id: "bone",
+        name: "Bone",
+        swatch: "#F2EDE4",
+        images: [
+          portrait("dusk-boxy-tee-bone-01.jpg", "Bone Dusk Boxy Tee with the taupe barrel pant."),
+          portrait("mineral-barrel-pant-taupe-01.jpg", "The same look, tee and taupe barrels, from a little further back."),
+        ],
+      },
+      { id: "mist-grey", name: "Mist Grey", swatch: "#D4D4D9", images: none },
+    ],
   },
   {
     handle: "earth-biker-short",
     name: "Earth Biker Short",
     priceAud: 79,
-    story: "A short with a close leg, sitting at the waist. Made to wear with the tee or the tank.",
-    fit: "Close leg, waist sitting. A measured size guide is not ready.",
-    pairsWith: ["dusk-boxy-tee", "ritual-crop-tank"],
+    cloth: "Women's high-waisted mid-thigh short, nylon and spandex.",
+    story: "A women's high-waisted short, to the mid thigh, in nylon and spandex.",
+    fit: "High waist, mid thigh. A measured size guide is not ready.",
+    pairsWith: ["ritual-crop-tank"],
+    colourways: [
+      {
+        id: "charcoal",
+        name: "Charcoal",
+        swatch: "#52524F",
+        images: [
+          portrait("ritual-crop-tank-lilac-01.jpg", "Charcoal Earth Biker Short with the lilac crop tank, on the dunes."),
+          portrait("training-01.jpg", "A training frame in the charcoal short and lilac tank."),
+          wide("hero-02.jpg", "Woman walking the dunes in the lilac tank and charcoal short."),
+        ],
+      },
+      { id: "bone-white", name: "Bone White", swatch: "#F7F4EF", images: none },
+    ],
   },
   {
     handle: "ritual-crop-tank",
     name: "Ritual Crop Tank",
     priceAud: 59,
-    story: "A cropped tank with a wide strap and a straight hem. The lightest piece in the drop.",
-    fit: "Wide strap, cropped hem. A measured size guide is not ready.",
+    cloth: "Women's fitted crew-neck crop.",
+    story: "A women's fitted crew-neck crop. The lightest piece in the drop.",
+    fit: "Fitted, cropped hem, wide strap. A measured size guide is not ready.",
     pairsWith: ["earth-biker-short"],
+    colourways: [
+      {
+        id: "lilac",
+        name: "Lilac",
+        swatch: "#DCD0EA",
+        images: [
+          portrait("ritual-crop-tank-lilac-01.jpg", "Lilac Ritual Crop Tank and charcoal short, walking the dunes."),
+          portrait("detail-lilac-tank-01.jpg", "Close frame of the lilac crop tank."),
+          wide("hero-02.jpg", "The lilac tank on the dunes, full figure."),
+        ],
+      },
+      { id: "espresso", name: "Espresso", swatch: "#544028", images: none },
+    ],
   },
 ];
 
@@ -87,8 +208,19 @@ export function aud(amount: number) {
   return `A$${amount}`;
 }
 
+export const campaign = {
+  hero: wide("hero-01.jpg", "Dawn on a salt lake. Two figures in Drop 01, barefoot on the salt."),
+  heroMobile: portrait("lookbook-aubergine-01.jpg", "Closer frame of the aubergine mock neck at dawn."),
+  dunes: wide("hero-02.jpg", "A walk on coastal dunes in the lilac crop tank and charcoal short."),
+  fleece: portrait("detail-hoodie-fleece-01.jpg", "Fleece texture at the pocket of the Dusk Mauve hoodie."),
+  lookbook: [
+    portrait("lookbook-aubergine-01.jpg", "The aubergine mock neck at dawn."),
+    portrait("movement-walk-01.jpg", "A walk in the mist grey fleece."),
+    portrait("training-01.jpg", "A training frame in lilac and charcoal."),
+  ],
+};
+
 export const sharedFacts = {
-  colour: "Aubergine",
   origin: "China",
   cloth: "The cloth and the weight are not confirmed. They will be published before the drop opens.",
   care: "The care label is not confirmed. Wash and dry instructions will be printed on the garment and published before the drop opens.",

@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     handle?: string;
     size?: string;
     qty?: number;
+    colour?: string;
     consent?: boolean;
     company?: string;
   } | null;
@@ -38,10 +39,11 @@ export async function POST(request: Request) {
     });
     if (saved.ok) stored.push("preorder");
   }
+  const colour = typeof body.colour === "string" ? body.colour.replace(/[^a-z0-9-]/gi, "").slice(0, 32) : "";
   const list = await captureMarketing({
     email,
     name: cleanName(body.name),
-    source: `preorder:${product.handle}:${size}:${qty}`.slice(0, 80),
+    source: `preorder:${product.handle}:${colour}:${size}:${qty}`.slice(0, 80),
   });
   if (list.ok) stored.push(...list.stored);
   if (!stored.length) {

@@ -12,6 +12,7 @@ export function Footer() {
           <h2>Shop</h2>
           <ul>
             <li><Link href="/shop">Drop 01</Link></li>
+            <li><Link href="/lookbook">Lookbook</Link></li>
             <li><Link href="/cart">Bag</Link></li>
             <li><Link href="/waitlist">Founding list</Link></li>
           </ul>

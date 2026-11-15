@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ProductTile } from "@/components/ProductTile";
+import { ProductCard } from "@/components/ProductCard";
 import { products, sharedFacts } from "@/lib/catalog";
 
 export const metadata: Metadata = {
@@ -14,12 +14,12 @@ export default function ShopPage() {
       <p className="kicker">Shop</p>
       <h1>Drop 01.</h1>
       <div className="prose">
-        <p>Seven pieces, one colour, aubergine. Each price below is the pre-order price. {sharedFacts.ship}</p>
+        <p>Seven pieces. The photographed colour leads each card. {sharedFacts.ship}</p>
         <p>Register a size on the piece. That holds your place on the list and does not take payment. Live checkout needs the Shopify store domain and the Storefront token.</p>
       </div>
-      <div className="grid products">
-        {products.map((product) => (
-          <ProductTile key={product.handle} product={product} />
+        <div className="edit-grid shop-grid">
+        {products.map((product, index) => (
+          <ProductCard key={product.handle} product={product} large={index === 0} priority={index < 2} />
         ))}
       </div>
       <div className="prose" style={{ marginTop: "4rem" }}>

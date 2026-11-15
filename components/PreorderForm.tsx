@@ -9,10 +9,14 @@ export function PreorderForm({
   handle,
   name,
   checkoutLive,
+  colour = "",
+  price,
 }: {
   handle: string;
   name: string;
   checkoutLive: boolean;
+  colour?: string;
+  price?: string;
 }) {
   const { add } = useCart();
   const router = useRouter();
@@ -66,6 +70,7 @@ export function PreorderForm({
         </button>
       ) : null}
       <form
+        id="preorder"
         onSubmit={async (event) => {
           event.preventDefault();
           if (!requireSize() || !size) return;
@@ -82,6 +87,7 @@ export function PreorderForm({
               handle,
               size,
               qty,
+              colour,
               consent: data.get("consent") === "on",
             }),
           });
@@ -103,7 +109,7 @@ export function PreorderForm({
         </label>
         <label className="field">
           <span>Email</span>
-          <input name="email" type="email" autoComplete="email" required maxLength={200} />
+          <input id="preorder-email" name="email" type="email" autoComplete="email" required maxLength={200} />
         </label>
         <label className="check">
           <input name="consent" type="checkbox" required />
@@ -116,6 +122,32 @@ export function PreorderForm({
       <p className="note" role="status">
         {note}
       </p>
+      <div className="buy-mobile">
+        <span className="price">{price}</span>
+        <label className="sr" htmlFor="mobile-size">Size</label>
+        <select
+          id="mobile-size"
+          value={size ?? ""}
+          onChange={(event) => setSize((event.target.value || null) as Size | null)}
+        >
+          <option value="">Size</option>
+          {sizes.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+        <button
+          className="action"
+          type="button"
+          onClick={() => {
+            if (!requireSize()) return;
+            const email = document.getElementById("preorder-email") as HTMLInputElement | null;
+            document.getElementById("preorder")?.scrollIntoView({ behavior: "smooth", block: "center" });
+            email?.focus();
+          }}
+        >
+          Pre-order
+        </button>
+      </div>
     </div>
   );
 }

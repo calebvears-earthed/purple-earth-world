@@ -9,7 +9,7 @@ import "./globals.css";
 
 const display = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
@@ -17,7 +17,7 @@ const display = Playfair_Display({
 
 const body = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400"],
   style: ["normal", "italic"],
   variable: "--font-body",
   display: "swap",
@@ -25,7 +25,7 @@ const body = Cormorant_Garamond({
 
 const label = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   variable: "--font-label",
   display: "swap",
 });
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F6F3EE",
+  themeColor: "#F2EDE4",
   width: "device-width",
   initialScale: 1,
 };
