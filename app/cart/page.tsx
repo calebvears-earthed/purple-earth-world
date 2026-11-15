@@ -12,7 +12,7 @@ export default function CartPage() {
       <p className="kicker">Bag</p>
       <h1>Pre-order.</h1>
       <div className="prose">
-        <p>The bag is kept in this browser. Checkout, tax and payment happen on Shopify. A number is assigned there, when the order exists. It is not assigned here.</p>
+        <p>The bag is kept in this browser. Pay only when Shopify checkout is connected. Until then, register the size on the piece. A number is given when an order exists, not here.</p>
       </div>
       <CartView />
     </section>

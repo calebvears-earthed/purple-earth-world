@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { aud, type Product } from "@/lib/catalog";
+import { aud, sharedFacts, type Product } from "@/lib/catalog";
 import { Logo } from "@/components/Logo";
 
 export function ProductTile({ product }: { product: Product }) {
@@ -18,9 +18,10 @@ export function ProductTile({ product }: { product: Product }) {
           <span>Photograph to come</span>
         </div>
       )}
-      <Logo variant="wordmark" width={160} />
+      <Logo variant="wordmark-reverse" width={140} className="wordmark" />
       <h3>{product.name}</h3>
-      <p className="price">{aud(product.priceAud)} draft</p>
+      <p className="price">Pre-order {aud(product.priceAud)}</p>
+      <p className="meta">{sharedFacts.ship}</p>
     </Link>
   );
 }

@@ -30,6 +30,9 @@ export function Header() {
       <Link href="/cart" aria-current={pathname === "/cart" ? "page" : undefined}>
         {bag}
       </Link>
+      <Link className="nav-cta" href="/shop">
+        Pre-order
+      </Link>
     </>
   );
 
@@ -39,7 +42,7 @@ export function Header() {
         Skip to content
       </a>
       <div className="bar">
-        <Logo linked width={200} />
+        <Logo linked variant="lockup-reverse" width={104} />
         <nav className="nav" aria-label="Primary">
           {items}
         </nav>

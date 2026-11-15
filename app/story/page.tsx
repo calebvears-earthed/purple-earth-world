@@ -19,7 +19,7 @@ export default function StoryPage() {
         <p className="pull">I spend my days making sure high voltage finds its way safely to earth. Purple Earth is the slower version of that, for people.</p>
         <p className="byline">Caleb. Adelaide.</p>
       </div>
-      <Link className="action" href="/shop">Shop Drop 01</Link>
+      <Link className="action" href="/shop">Pre-order Drop 01</Link>
     </section>
   );
 }

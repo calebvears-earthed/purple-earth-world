@@ -93,7 +93,9 @@ export const sharedFacts = {
   cloth: "The cloth and the weight are not confirmed. They will be published before the drop opens.",
   care: "The care label is not confirmed. Wash and dry instructions will be printed on the garment and published before the drop opens.",
   preorder:
-    "Drop 01 is a 14 day numbered pre-order. A number is given when an order is placed at checkout. This preview does not take payment and does not reserve a number.",
+    "Drop 01 is a 14 day numbered pre-order. Registering a size holds your place on the list. It does not take payment and does not give you a number. A number is given when checkout takes the order.",
+  ship:
+    "Made after the 14 day window closes, then dispatched. A firm ship date is shown before you pay.",
 };
 
 export type Ritual = {

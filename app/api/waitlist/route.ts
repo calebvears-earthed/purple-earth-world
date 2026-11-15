@@ -19,5 +19,7 @@ export async function POST(request: Request) {
     return json({ ok: false, message: "The list is not connected yet. Nothing was stored." }, 503);
   }
   if (!result.ok) return json({ ok: false, message: "We could not store that email. Try again later." }, 502);
-  return json({ ok: true, message: "You are on the founding list.", stored: result.stored });
+  const source = typeof body.source === "string" ? body.source : "";
+  const message = source.startsWith("launch") ? "You will get the launch notes." : "You are on the founding list.";
+  return json({ ok: true, message, stored: result.stored });
 }

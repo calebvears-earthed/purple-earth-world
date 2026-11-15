@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans, Playfair_Display } from "next/font/google"
 import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LaunchCapture } from "@/components/LaunchCapture";
 import { siteUrl } from "@/lib/catalog";
 import "./globals.css";
 
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     default: "Purple Earth",
     template: "%s. Purple Earth",
   },
-  description: "Ritual wear from Adelaide. Drop 01 is a 14 day numbered pre-order. Prices and words on this preview are drafts.",
+  description: "Ritual wear from Adelaide. Drop 01 is a 14 day numbered pre-order. Register a size now. Payment opens when checkout is connected.",
   applicationName: "Purple Earth",
   icons: { icon: "/brand/logo/purple-earth-symbol.svg" },
   openGraph: {
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2B1830",
+  themeColor: "#F6F3EE",
   width: "device-width",
   initialScale: 1,
 };
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CartProvider>
           <Header />
           <main id="content">{children}</main>
+          <LaunchCapture />
           <Footer />
         </CartProvider>
       </body>

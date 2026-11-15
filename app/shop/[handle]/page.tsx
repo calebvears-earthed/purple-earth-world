@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AddToPreorder } from "@/components/AddToPreorder";
+import { PreorderForm } from "@/components/PreorderForm";
 import { Reviews } from "@/components/Reviews";
 import { aud, getProduct, products, sharedFacts } from "@/lib/catalog";
+import { shopifyConfigured } from "@/lib/integrations";
 
 export function generateStaticParams() {
   return products.map((product) => ({ handle: product.handle }));
 }
 
 export const dynamicParams = false;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
   const { handle } = await params;
@@ -46,12 +48,13 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           )}
         </div>
         <div>
-          <p className="kicker">Drop 01. Pre-order</p>
+          <p className="kicker">Drop 01 pre-order</p>
           <h1>{product.name}</h1>
-          <p className="price">{aud(product.priceAud)} draft</p>
+          <p className="price">Pre-order {aud(product.priceAud)}</p>
+          <p className="meta">{sharedFacts.ship}</p>
           <p>{product.story}</p>
           <p>{sharedFacts.preorder}</p>
-          <AddToPreorder handle={product.handle} name={product.name} />
+          <PreorderForm handle={product.handle} name={product.name} checkoutLive={shopifyConfigured()} />
           <p>Earn {product.priceAud} Volts at the base rate, once the program is open. Draft.</p>
           <h2>With the set</h2>
           <ul className="links">

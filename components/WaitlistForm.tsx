@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 
-export function WaitlistForm({ source = "founding-list", compact = false }: { source?: string; compact?: boolean }) {
+export function WaitlistForm({
+  source = "founding-list",
+  compact = false,
+  button = "Join the list",
+  consent = "Add me to the Purple Earth list. I can unsubscribe at any time.",
+}: {
+  source?: string;
+  compact?: boolean;
+  button?: string;
+  consent?: string;
+}) {
   const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
 
@@ -49,10 +59,10 @@ export function WaitlistForm({ source = "founding-list", compact = false }: { so
       </label>
       <label className="check">
         <input name="consent" type="checkbox" required />
-        <span>Add me to the Purple Earth list. I can unsubscribe at any time.</span>
+        <span>{consent}</span>
       </label>
       <button className="action" type="submit" disabled={pending}>
-        {pending ? "Sending" : "Join the list"}
+        {pending ? "Sending" : button}
       </button>
       <p className="note" role="status">
         {status}

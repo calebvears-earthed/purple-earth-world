@@ -2,9 +2,11 @@
 
 Ritual wear from Adelaide. This is the v1 website: a Next.js app on Vercel, preview only until Caleb says merge.
 
-The visual system is the Luminous Globe. Midnight Aubergine `#2B1830`, Mineral Purple `#38213E`, Aged Aubergine `#341A3A`, Bone `#F2EDE4`, Espresso `#544028` once per page as the action. Type is Playfair Display, Cormorant Garamond, and DM Sans. Logos in `public/brand/logo` are the supplied files. The aurora file is not used.
+The site is light and minimal: bone paper, white cards, lilac bands, aubergine type, and one aubergine hero. Logos in `public/brand/logo` are the supplied files. On light grounds the reverse lockup is used. The aurora file is not used. Type is Playfair Display, Cormorant Garamond, and DM Sans.
 
-Drop 01 prices and the words on the site are drafts. The draft line hides when `NEXT_PUBLIC_CONTENT_STATUS=final`.
+Drop 01 is the conversion path. Each piece shows a pre-order price and the ship window: made after the 14 day window, then dispatched, with a firm date before payment. Registering a size posts to `/api/preorder`. Live payment turns on only when both `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` are set. Until then the register form is the working path, and it stores the row only when Supabase or Klaviyo is connected. Launch notes use `/api/waitlist` with source `launch-updates`.
+
+Prices and words stay marked draft until `NEXT_PUBLIC_CONTENT_STATUS=final`.
 
 ## Commands
 
@@ -23,7 +25,7 @@ Copy `.env.example` to `.env.local`. Leave a key blank and that connection stays
 2. A Shopify Flow (or equivalent): when an order is created and the cart attribute `drop` is `01`, add the tag `drop-01-preorder`. The pre-order summary route reads that tag. It drafts a count with a 10 percent buffer. It does not buy anything.
 3. `SHOPIFY_ADMIN_TOKEN` with read access to orders and products, server only, for `/api/automation/preorder-summary`.
 4. Klaviyo. `KLAVIYO_API_KEY` and `KLAVIYO_LIST_ID`. The founding list subscribes server side. Build these flows in Klaviyo, they are not created from the site: welcome (three emails: the story, the club, the drop), browse abandon, cart abandon, post purchase, win back at day 90, Volts expiry reminder, tier upgrade. Also a shipping note, a care card, and a review request on day 14, triggered when an order is fulfilled.
-5. Supabase, for the list, Walk Club RSVPs, QR check-ins, and barefoot minutes. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, server only. Tables: `waitlist` (email, name, source, created_at), `walk_club_rsvps` (name, email, walk_id, created_at), `walk_club_checkins` (email, walk_id, created_at, unique on email plus walk_id), `barefoot_logs` (email, minutes, month, created_at, unique on email plus month).
+5. Supabase, for the list, pre-orders, Walk Club RSVPs, QR check-ins, and barefoot minutes. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, server only. Tables: `waitlist` (email, name, source, created_at), `preorders` (email, name, handle, size, qty, created_at), `walk_club_rsvps` (name, email, walk_id, created_at), `walk_club_checkins` (email, walk_id, created_at, unique on email plus walk_id), `barefoot_logs` (email, minutes, month, created_at, unique on email plus month).
 6. Rivo (or swap the base URL if you choose Smile and adapt `lib/integrations.ts`). `RIVO_API_KEY`. Awards stay off until `LOYALTY_AWARDS_ENABLED=true`, so adding the key does not mint points.
 7. Judge.me. `NEXT_PUBLIC_JUDGEME_SHOP_DOMAIN` and `NEXT_PUBLIC_JUDGEME_PUBLIC_TOKEN`. Map a published review with a photograph to `POST /api/webhooks/review` with header `Authorization: Bearer AUTOMATION_SECRET` and body `{ "event": "review_published", "hasPhoto": true, "email": "..." }`.
 8. Walk Club QR. Set `WALK_CLUB_CHECKIN_TOKEN` and point the code at `/club/check-in?t=TOKEN&walk=WALK_ID`.
