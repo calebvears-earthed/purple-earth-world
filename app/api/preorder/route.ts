@@ -22,8 +22,9 @@ export async function POST(request: Request) {
   const product = getProduct(typeof body.handle === "string" ? body.handle : "");
   const size = sizes.find((item) => item === body.size) as Size | undefined;
   const qty = Number(body.qty);
-  if (!email || !product || !size || !Number.isInteger(qty) || qty < 1 || qty > 4) {
-    return json({ ok: false, message: "Check the email, the piece and the size." }, 400);
+  const colour = product?.colourways.find((item) => item.id === body.colour);
+  if (!email || !product || !size || !colour || !Number.isInteger(qty) || qty < 1 || qty > 4) {
+    return json({ ok: false, message: "Check the email, the piece, the colour and the size." }, 400);
   }
 
   const stored: string[] = [];
@@ -33,17 +34,17 @@ export async function POST(request: Request) {
       email,
       name: cleanName(body.name) || null,
       handle: product.handle,
+      colour: colour.id,
       size,
       qty,
       created_at: new Date().toISOString(),
     });
     if (saved.ok) stored.push("preorder");
   }
-  const colour = typeof body.colour === "string" ? body.colour.replace(/[^a-z0-9-]/gi, "").slice(0, 32) : "";
   const list = await captureMarketing({
     email,
     name: cleanName(body.name),
-    source: `preorder:${product.handle}:${colour}:${size}:${qty}`.slice(0, 80),
+    source: `preorder:${product.handle}:${colour.id}:${size}:${qty}`.slice(0, 80),
   });
   if (list.ok) stored.push(...list.stored);
   if (!stored.length) {
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
   }
   return json({
     ok: true,
-    message: `Registered for the ${product.name}, size ${size}. Payment is not taken here.`,
+    message: `Registered for the ${product.name}, ${colour.name}, size ${size}. Payment is not taken here.`,
     stored,
   });
 }

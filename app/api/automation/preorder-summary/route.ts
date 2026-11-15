@@ -5,7 +5,8 @@ type LineNode = {
   sku: string | null;
   title: string;
   quantity: number;
-  variant: { title: string; selectedOptions: { name: string; value: string }[] } | null;
+  customAttributes: { key: string; value: string }[];
+  variant: { id: string; title: string; selectedOptions: { name: string; value: string }[] } | null;
 };
 
 type OrderNode = {
@@ -27,7 +28,13 @@ const query = `query Preorder($query: String, $cursor: String) {
       name
       lineItems(first: 100) {
         pageInfo { hasNextPage }
-        nodes { sku title quantity variant { title selectedOptions { name value } } }
+        nodes {
+          sku
+          title
+          quantity
+          customAttributes { key value }
+          variant { id title selectedOptions { name value } }
+        }
       }
     }
   }
@@ -71,13 +78,17 @@ export async function POST(request: Request) {
     return json({ ok: false, message: "The count stopped before every order was read. Nothing was purchased." }, 502);
   }
 
-  const counts = new Map<string, { sku: string; title: string; size: string; quantity: number }>();
+  const counts = new Map<string, { sku: string; title: string; size: string; colour: string; quantity: number }>();
   for (const order of orders) {
     for (const line of order.lineItems.nodes) {
-      const sizeOption = line.variant?.selectedOptions.find((option) => option.name.toLowerCase() === "size");
-      const size = sizeOption?.value || line.variant?.title || "unspecified";
-      const key = `${line.sku || line.title}|${size}`;
-      const current = counts.get(key) || { sku: line.sku || "", title: line.title, size, quantity: 0 };
+      const named = (names: string[]) =>
+        line.variant?.selectedOptions.find((option) => names.includes(option.name.toLowerCase()))?.value ||
+        line.customAttributes?.find((attribute) => names.includes(attribute.key.toLowerCase()))?.value ||
+        "";
+      const size = named(["size"]) || "unspecified";
+      const colour = named(["colour", "color", "colorway"]) || "unspecified";
+      const key = `${line.variant?.id || ""}|${line.sku || ""}|${line.title}|${size}|${colour}`;
+      const current = counts.get(key) || { sku: line.sku || "", title: line.title, size, colour, quantity: 0 };
       current.quantity += line.quantity;
       counts.set(key, current);
     }

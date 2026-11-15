@@ -22,22 +22,24 @@ export function CartView() {
         const product = getProduct(line.handle);
         if (!product) return null;
         return (
-          <div className="cart-line" key={`${line.handle}-${line.size}`}>
+          <div className="cart-line" key={`${line.handle}-${line.colour}-${line.size}`}>
             <div>
               <Link href={`/shop/${product.handle}`}>{product.name}</Link>
-              <div className="num">Size {line.size}</div>
+              <div className="num">
+                {product.colourways.find((item) => item.id === line.colour)?.name} · size {line.size}
+              </div>
             </div>
             <div className="qty">
-              <button type="button" aria-label={`Fewer ${product.name}`} onClick={() => setQty(line.handle, line.size, line.qty - 1)}>
+              <button type="button" aria-label={`Fewer ${product.name}`} onClick={() => setQty(line.handle, line.size, line.colour, line.qty - 1)}>
                 −
               </button>
               <span>{line.qty}</span>
-              <button type="button" aria-label={`More ${product.name}`} onClick={() => setQty(line.handle, line.size, line.qty + 1)}>
+              <button type="button" aria-label={`More ${product.name}`} onClick={() => setQty(line.handle, line.size, line.colour, line.qty + 1)}>
                 +
               </button>
             </div>
             <p className="price">{aud(product.priceAud * line.qty)} draft</p>
-            <button className="remove" type="button" onClick={() => remove(line.handle, line.size)}>
+            <button className="remove" type="button" onClick={() => remove(line.handle, line.size, line.colour)}>
               Remove
             </button>
           </div>

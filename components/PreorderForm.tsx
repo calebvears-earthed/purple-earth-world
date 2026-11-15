@@ -62,7 +62,11 @@ export function PreorderForm({
           type="button"
           onClick={() => {
             if (!requireSize() || !size) return;
-            add({ handle, size, qty });
+            if (!colour) {
+              setNote("Choose a colour.");
+              return;
+            }
+            add({ handle, size, qty, colour });
             router.push("/cart");
           }}
         >

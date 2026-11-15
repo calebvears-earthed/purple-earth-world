@@ -1,6 +1,6 @@
 import { products, type Size, sizes } from "@/lib/catalog";
 
-export type BagLine = { handle: string; size: Size; qty: number };
+export type BagLine = { handle: string; size: Size; colour: string; qty: number };
 
 export function shopifyDomain() {
   return (process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || "")
@@ -128,22 +128,44 @@ export async function createCheckout(lines: BagLine[]) {
     if (!nodes.length) {
       throw new Error(`${product.name} is not in the Shopify catalogue yet. Use the handle ${line.handle}.`);
     }
-    const wanted = line.size.toLowerCase();
+    const colourway = product.colourways.find((item) => item.id === line.colour);
+    if (!colourway) throw new Error(`${product.name} has no colour called ${line.colour}. Nothing was ordered.`);
+    const fold = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const colourKeys = new Set([fold(colourway.id), fold(colourway.name)]);
+    const wantedSize = line.size.toLowerCase();
     const sizeOf = (node: VariantNode) =>
-      node.selectedOptions.find((option) => option.name.toLowerCase() === "size")?.value.toLowerCase();
-    const sized = nodes.find((node) => sizeOf(node) === wanted || node.title.toLowerCase() === wanted);
-    const only = nodes.length === 1 ? nodes[0] : undefined;
-    const onlyIsDefault =
-      only && !sizeOf(only) && !sizes.some((size) => size.toLowerCase() === only.title.toLowerCase());
-    const variant = sized ?? (onlyIsDefault ? only : undefined);
-    if (!variant) {
-      throw new Error(`${product.name} has no Shopify variant for size ${line.size}.`);
+      node.selectedOptions.find((option) => option.name.toLowerCase() === "size")?.value.toLowerCase() ?? "";
+    const colourOf = (node: VariantNode) => {
+      const raw = node.selectedOptions.find((option) =>
+        ["color", "colour", "colorway"].includes(option.name.toLowerCase()),
+      )?.value;
+      return raw ? fold(raw) : "";
+    };
+    const hasSize = nodes.some((node) => sizeOf(node));
+    const hasColour = nodes.some((node) => colourOf(node));
+    const matched = nodes.filter((node) => {
+      if (hasSize && sizeOf(node) !== wantedSize) return false;
+      if (hasColour && !colourKeys.has(colourOf(node))) return false;
+      if (!hasSize && !hasColour) {
+        return nodes.length === 1 && !sizes.some((size) => fold(node.title) === fold(size));
+      }
+      const title = fold(node.title);
+      const namesAnother = product.colourways.some((item) => {
+        const key = fold(item.name);
+        return key && key !== fold(colourway.name) && title.includes(key);
+      });
+      return !namesAnother;
+    });
+    if (matched.length !== 1) {
+      throw new Error(`${product.name} has no Shopify variant for ${colourway.name}, size ${line.size}. Nothing was ordered.`);
     }
+    const variant = matched[0];
     merchandise.push({
       merchandiseId: variant.id,
       quantity: line.qty,
       attributes: [
         { key: "Size", value: line.size },
+        { key: "Colour", value: colourway.name },
         { key: "Drop", value: "01" },
       ],
     });

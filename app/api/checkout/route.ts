@@ -10,6 +10,10 @@ export async function POST(request: Request) {
     if (!products.some((product) => product.handle === line.handle)) {
       return json({ ok: false, message: "A piece in the bag is not in Drop 01." }, 400);
     }
+    const piece = products.find((product) => product.handle === line.handle);
+    if (piece && !piece.colourways.some((item) => item.id === line.colour)) {
+      return json({ ok: false, message: "Choose a listed colour." }, 400);
+    }
     if (!sizes.includes(line.size as Size)) return json({ ok: false, message: "Choose a listed size." }, 400);
     if (!Number.isInteger(line.qty) || line.qty < 1 || line.qty > 4) {
       return json({ ok: false, message: "Quantity must be from 1 to 4." }, 400);
