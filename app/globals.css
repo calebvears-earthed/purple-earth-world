@@ -160,19 +160,25 @@ main { padding-top: 4.4rem; }
 .hero-scrim {
   position: absolute;
   left: 0;
-  right: 0;
   bottom: 0;
-  height: 46%;
-  background: linear-gradient(to top, rgba(242, 237, 228, 0.78), rgba(242, 237, 228, 0));
+  width: min(34rem, 86vw);
+  height: min(24rem, 46vh);
+  background: radial-gradient(
+    130% 100% at 0% 100%,
+    rgba(242, 237, 228, 0.5) 0%,
+    rgba(242, 237, 228, 0.16) 42%,
+    rgba(242, 237, 228, 0) 70%
+  );
   pointer-events: none;
+  z-index: 1;
 }
 .hero-copy {
   position: absolute;
   left: var(--pad);
-  right: var(--pad);
-  bottom: 6vh;
+  right: auto;
+  bottom: max(1.75rem, 4vh);
   z-index: 2;
-  max-width: 22rem;
+  max-width: min(22rem, calc(100vw - 2.5rem));
 }
 .hero-copy h1 {
   font-family: var(--font-display), "Times New Roman", serif;
@@ -191,8 +197,9 @@ main { padding-top: 4.4rem; }
 
 @media (max-width: 700px) {
   .hero-photo { object-position: center 42%; }
-  .hero-copy { bottom: 11vh; max-width: 16rem; }
-  .hero-copy h1 { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+  .hero-scrim { width: min(20rem, 92vw); height: min(20rem, 46vh); }
+  .hero-copy { bottom: max(1.25rem, 3vh); max-width: min(18rem, calc(100vw - 2.5rem)); }
+  .hero-copy h1 { font-size: clamp(2.5rem, 11vw, 3.3rem); }
 }
 
 .kicker {
@@ -249,19 +256,32 @@ h3 { font-size: clamp(1.35rem, 2vw, 1.8rem); margin: 0.6rem 0 0.2rem; font-weigh
 .action:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .section { padding: 8rem var(--pad); }
-.band { background: var(--white); }
-.band-frame { position: relative; height: min(88vh, 920px); }
+.band { position: relative; z-index: 1; background: var(--white); }
+.band-frame { position: relative; height: min(88vh, 920px); overflow: hidden; }
 .band-frame img, .card-frame img, .gallery-frame img, .manifesto-frame img, .teaser-frame img, .lb-full img, .lb-portrait img {
   object-fit: cover;
   object-position: center top;
 }
-.band-caption, .lb-full .lb-caption {
+.band-caption {
+  position: static;
+  margin: 0;
+  padding: 1rem var(--pad) 2.5rem;
+  font-family: var(--font-label), sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+.lb-full .lb-caption {
   position: absolute;
   left: var(--pad);
+  right: var(--pad);
   bottom: 1.4rem;
   z-index: 2;
-  color: var(--ink);
+  margin: 0;
   padding: 0;
+  color: var(--ink);
+  max-width: 28rem;
 }
 .lb-caption, figcaption {
   font-family: var(--font-label), sans-serif;
