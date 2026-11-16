@@ -1,0 +1,145 @@
+{
+  "brand": {
+    "name": "Purple Earth",
+    "descriptor": "premium Australian wellness ritual",
+    "category": "night ritual \u00b7 saffron supplementation",
+    "tone": "quiet confidence, evidence-led, taste-led"
+  },
+  "color": {
+    "ground": {
+      "midnight-aubergine": {
+        "hex": "#2B1830",
+        "role": "primary background, default ground",
+        "use": "full-bleed only"
+      },
+      "mineral-purple": {
+        "hex": "#38213E",
+        "role": "secondary ground"
+      },
+      "aged-aubergine": {
+        "hex": "#341A3A",
+        "role": "tertiary ground, transitions"
+      }
+    },
+    "ink": {
+      "bone": {
+        "hex": "#F2EDE4",
+        "role": "primary text and logo linework"
+      },
+      "espresso": {
+        "hex": "#544028",
+        "role": "accent only: CTAs, section labels, grounding dot",
+        "rule": "never decorative, never a large fill"
+      }
+    },
+    "logo-ink": {
+      "bone": "#F3ECE0",
+      "land": "#5E335B",
+      "dot": "#544028",
+      "reverse-land": "#C9B4D0"
+    },
+    "rules": [
+      "three purples are full-bleed grounds, never small accent spots",
+      "espresso marks action or evidence only",
+      "no gradients on the mark except the approved aurora variant"
+    ]
+  },
+  "type": {
+    "display": {
+      "family": "Playfair Display",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "usage": "headlines, hero, pull quotes",
+      "leading": "1.1\u20131.2"
+    },
+    "body": {
+      "family": "Cormorant Garamond",
+      "weights": [
+        300,
+        400,
+        500,
+        600
+      ],
+      "usage": "body copy 16\u201320px"
+    },
+    "label": {
+      "family": "DM Sans",
+      "weights": [
+        300,
+        400,
+        500
+      ],
+      "usage": "nav, buttons, section labels",
+      "case": "uppercase",
+      "tracking": "0.2\u20130.35em"
+    },
+    "wordmark": {
+      "family": "DM Sans Light",
+      "case": "uppercase",
+      "tracking": "0.32em display / 0.16em garment",
+      "rule": "outlined paths, never live text"
+    },
+    "forbidden": [
+      "Poppins",
+      "Montserrat",
+      "Inter",
+      "any geometric sans",
+      "any script or handwritten face"
+    ]
+  },
+  "logo": {
+    "name": "Luminous Globe",
+    "structure": [
+      "hairline circle",
+      "Earth globe, Atlantic view: Americas, Greenland, Europe, Africa",
+      "3 meridians, 2 parallels",
+      "sprout: vertical stem, two almond leaves",
+      "espresso grounding dot below the ring"
+    ],
+    "variants": [
+      "master colour on aubergine",
+      "aurora (vector gradient glow)",
+      "transparent colour",
+      "reverse for light grounds",
+      "one-colour line",
+      "symbol only",
+      "wordmark only"
+    ],
+    "clearspace": "height of the grounding dot x4 on all sides",
+    "minimum": {
+      "lockup": "24 mm print / 120 px digital",
+      "symbol": "8 mm print / 16 px digital",
+      "wordmark": "26 mm print / 140 px digital"
+    },
+    "forbidden": [
+      "rotate, skew or stretch",
+      "recolour outside the approved palette",
+      "add glow, shadow or bevel to the master",
+      "separate globe from grounding dot",
+      "add taglines inside the lockup",
+      "place on busy photography"
+    ]
+  },
+  "layout": {
+    "grid": "one idea per frame",
+    "margins": "generous, at least 8% of the short edge",
+    "ground": "dark dominant, bone type",
+    "accent": "espresso at one point of action only"
+  },
+  "voice": {
+    "do": [
+      "state the evidence plainly",
+      "short declarative sentences",
+      "no exclamation marks"
+    ],
+    "dont": [
+      "oversell",
+      "invent claims",
+      "use hype adjectives"
+    ]
+  }
+}
