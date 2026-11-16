@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { products, sharedFacts } from "@/lib/catalog";
+import { registrationOpen, shopifyConfigured } from "@/lib/integrations";
 
 export const metadata: Metadata = {
   title: "Drop 01",
@@ -15,7 +16,14 @@ export default function ShopPage() {
       <h1>Drop 01.</h1>
       <div className="prose">
         <p>Seven pieces. The photographed colour leads each card. {sharedFacts.ship}</p>
-        <p>Register a size on the piece. That holds your place on the list and does not take payment. Live checkout needs the Shopify store domain and the Storefront token.</p>
+        <p>
+          {registrationOpen()
+            ? "Register a size on the piece. That holds your place on the list and does not take payment."
+            : "Registration is on hold until the list is connected. Nothing is stored from a piece page."}{" "}
+          {shopifyConfigured()
+            ? "Payment is open at checkout."
+            : "Payment is on hold until checkout is connected."}
+        </p>
       </div>
         <div className="edit-grid shop-grid">
         {products.map((product, index) => (

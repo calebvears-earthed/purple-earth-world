@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     default: "Purple Earth",
     template: "%s. Purple Earth",
   },
-  description: "Ritual wear from Adelaide. Drop 01 is a 14 day numbered pre-order. Register a size now. Payment opens when checkout is connected.",
+  description: "Ritual wear from Adelaide. Drop 01 is a 14 day numbered pre-order. Payment opens when checkout is connected.",
   applicationName: "Purple Earth",
   icons: { icon: "/brand/logo/purple-earth-symbol.svg" },
   openGraph: {
