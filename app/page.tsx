@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { CampaignImage } from "@/components/CampaignImage";
 import { campaign, products } from "@/lib/catalog";
+import { registrationOpen, shopifyConfigured } from "@/lib/integrations";
 
 export default function HomePage() {
   const ordered = [
@@ -47,7 +48,13 @@ export default function HomePage() {
         <Reveal>
           <p className="kicker">The drop</p>
           <h2>Seven pieces.</h2>
-          <p className="muted">Pre-order prices in Australian dollars. Register a size on the piece. Payment opens when checkout is connected.</p>
+          <p className="muted">
+            Pre-order prices in Australian dollars.{" "}
+            {registrationOpen()
+              ? "Register a size on the piece."
+              : "Registration is on hold until the list is connected."}{" "}
+            {shopifyConfigured() ? "Payment is open at checkout." : "Payment is on hold until checkout is connected."}
+          </p>
         </Reveal>
         <div className="edit-grid">
           {lead ? (

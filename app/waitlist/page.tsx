@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { registrationOpen } from "@/lib/integrations";
 
 export const metadata: Metadata = {
   title: "Founding list",
@@ -15,7 +16,7 @@ export default function WaitlistPage() {
         <p>Two hundred places. No purchase. A note when Drop 01 opens, and nothing else promised.</p>
         <p>The live count will show when the database is connected. This preview does not pretend to know how many places are left.</p>
       </div>
-      <WaitlistForm />
+      <WaitlistForm open={registrationOpen()} />
     </section>
   );
 }

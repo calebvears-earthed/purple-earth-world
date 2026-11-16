@@ -6,7 +6,15 @@ import { CampaignImage } from "@/components/CampaignImage";
 import { PreorderForm } from "@/components/PreorderForm";
 import { aud, getProduct, sharedFacts, type Product } from "@/lib/catalog";
 
-export function ProductStage({ product, checkoutLive }: { product: Product; checkoutLive: boolean }) {
+export function ProductStage({
+  product,
+  checkoutLive,
+  registrationOpen = true,
+}: {
+  product: Product;
+  checkoutLive: boolean;
+  registrationOpen?: boolean;
+}) {
   const [colourId, setColourId] = useState(product.colourways[0]?.id ?? "");
   const colour = product.colourways.find((item) => item.id === colourId) ?? product.colourways[0];
   const frames = colour?.images ?? [];
@@ -51,6 +59,7 @@ export function ProductStage({ product, checkoutLive }: { product: Product; chec
           handle={product.handle}
           name={product.name}
           checkoutLive={checkoutLive}
+          registrationOpen={registrationOpen}
           colour={colour?.id}
           price={aud(product.priceAud)}
         />

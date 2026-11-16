@@ -9,12 +9,14 @@ export function PreorderForm({
   handle,
   name,
   checkoutLive,
+  registrationOpen = true,
   colour = "",
   price,
 }: {
   handle: string;
   name: string;
   checkoutLive: boolean;
+  registrationOpen?: boolean;
   colour?: string;
   price?: string;
 }) {
@@ -24,7 +26,9 @@ export function PreorderForm({
   const [qty, setQty] = useState(1);
   const [note, setNote] = useState(
     checkoutLive
-      ? "Choose a size. Pay at checkout, or register the size if you are not paying yet."
+      ? registrationOpen
+        ? "Choose a size. Pay at checkout, or register the size if you are not paying yet."
+        : "Choose a size. Email registration is on hold until the list is connected."
       : "Choose a size and your email. This registers the pre-order. It does not take payment.",
   );
   const [pending, setPending] = useState(false);
@@ -33,6 +37,14 @@ export function PreorderForm({
     if (size) return true;
     setNote("Choose a size.");
     return false;
+  }
+
+  if (!checkoutLive && !registrationOpen) {
+    return (
+      <p className="note" role="status">
+        Pre-order is on hold. Registration opens when the list is connected, and payment opens when checkout is connected. Nothing is stored and no payment is taken.
+      </p>
+    );
   }
 
   return (
@@ -73,6 +85,7 @@ export function PreorderForm({
           Pay pre-order
         </button>
       ) : null}
+      {registrationOpen ? (
       <form
         id="preorder"
         onSubmit={async (event) => {
@@ -82,23 +95,28 @@ export function PreorderForm({
           const data = new FormData(form);
           if (String(data.get("company") || "")) return;
           setPending(true);
-          const response = await fetch("/api/preorder", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-              email: data.get("email"),
-              name: data.get("name"),
-              handle,
-              size,
-              qty,
-              colour,
-              consent: data.get("consent") === "on",
-            }),
-          });
-          const body = (await response.json()) as { message?: string };
-          setNote(body.message || "Try again in a moment.");
-          setPending(false);
-          if (response.ok) form.reset();
+          try {
+            const response = await fetch("/api/preorder", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({
+                email: data.get("email"),
+                name: data.get("name"),
+                handle,
+                size,
+                qty,
+                colour,
+                consent: data.get("consent") === "on",
+              }),
+            });
+            const body = (await response.json().catch(() => null)) as { message?: string } | null;
+            setNote(body?.message || "Try again in a moment.");
+            if (response.ok) form.reset();
+          } catch {
+            setNote("Try again in a moment.");
+          } finally {
+            setPending(false);
+          }
         }}
       >
         <div className="honeypot" aria-hidden="true">
@@ -123,6 +141,11 @@ export function PreorderForm({
           {pending ? "Sending" : "Register pre-order"}
         </button>
       </form>
+      ) : (
+        <p className="note" role="status">
+          Email registration is on hold until the list is connected. Nothing is stored from this page.
+        </p>
+      )}
       <p className="note" role="status">
         {note}
       </p>
@@ -143,7 +166,16 @@ export function PreorderForm({
           className="action"
           type="button"
           onClick={() => {
-            if (!requireSize()) return;
+            if (!requireSize() || !size) return;
+            if (checkoutLive && !registrationOpen) {
+              if (!colour) {
+                setNote("Choose a colour.");
+                return;
+              }
+              add({ handle, size, qty, colour });
+              router.push("/cart");
+              return;
+            }
             const email = document.getElementById("preorder-email") as HTMLInputElement | null;
             document.getElementById("preorder")?.scrollIntoView({ behavior: "smooth", block: "center" });
             email?.focus();

@@ -16,7 +16,10 @@ export async function POST(request: Request) {
     source: typeof body.source === "string" ? body.source.slice(0, 80) : "founding-list",
   });
   if (result.reason === "not_connected") {
-    return json({ ok: false, message: "The list is not connected yet. Nothing was stored." }, 503);
+    return json(
+      { ok: false, holding: true, message: "The list is on hold. Nothing was stored." },
+      503,
+    );
   }
   if (!result.ok) return json({ ok: false, message: "We could not store that email. Try again later." }, 502);
   const source = typeof body.source === "string" ? body.source : "";

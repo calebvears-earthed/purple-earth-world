@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ProductStage } from "@/components/ProductStage";
 import { Reviews } from "@/components/Reviews";
 import { aud, getProduct, products, sharedFacts } from "@/lib/catalog";
-import { shopifyConfigured } from "@/lib/integrations";
+import { registrationOpen, shopifyConfigured } from "@/lib/integrations";
 
 export function generateStaticParams() {
   return products.map((product) => ({ handle: product.handle }));
@@ -29,7 +29,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
 
   return (
     <article className="product-page">
-      <ProductStage product={product} checkoutLive={shopifyConfigured()} />
+      <ProductStage
+        product={product}
+        checkoutLive={shopifyConfigured()}
+        registrationOpen={registrationOpen()}
+      />
       <section className="section product-notes">
         <div>
           <h2>The piece</h2>

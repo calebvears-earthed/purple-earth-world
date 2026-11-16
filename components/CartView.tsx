@@ -5,7 +5,7 @@ import { aud, getProduct } from "@/lib/catalog";
 import { useCart } from "@/components/CartProvider";
 import { CheckoutButton } from "@/components/CheckoutButton";
 
-export function CartView() {
+export function CartView({ checkoutLive }: { checkoutLive: boolean }) {
   const { lines, ready, setQty, remove } = useCart();
   if (!ready) return <p>Opening your bag.</p>;
   if (!lines.length) {
@@ -46,7 +46,13 @@ export function CartView() {
         );
       })}
       <p className="price">Draft total {aud(total)}</p>
-      <CheckoutButton />
+      {checkoutLive ? (
+        <CheckoutButton />
+      ) : (
+        <p className="note" role="status">
+          Checkout is on hold. No payment is taken from this bag.
+        </p>
+      )}
     </div>
   );
 }

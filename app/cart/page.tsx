@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CartView } from "@/components/CartView";
+import { shopifyConfigured } from "@/lib/integrations";
 
 export const metadata: Metadata = {
   title: "Bag",
@@ -12,9 +13,9 @@ export default function CartPage() {
       <p className="kicker">Bag</p>
       <h1>Pre-order.</h1>
       <div className="prose">
-        <p>The bag is kept in this browser. Pay only when Shopify checkout is connected. Until then, register the size on the piece. A number is given when an order exists, not here.</p>
+        <p>The bag is kept in this browser. {shopifyConfigured() ? "Pay only through Shopify checkout." : "Checkout is on hold until the shop is connected. No payment is taken here."} A number is given when an order exists, not here.</p>
       </div>
-      <CartView />
+      <CartView checkoutLive={shopifyConfigured()} />
     </section>
   );
 }

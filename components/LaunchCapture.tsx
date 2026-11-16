@@ -1,4 +1,5 @@
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { registrationOpen } from "@/lib/integrations";
 
 export function LaunchCapture() {
   return (
@@ -12,6 +13,7 @@ export function LaunchCapture() {
         <WaitlistForm
           source="launch-updates"
           compact
+          open={registrationOpen()}
           button="Send the notes"
           consent="Send me launch notes. I can unsubscribe at any time."
         />

@@ -21,7 +21,11 @@ export async function POST(request: Request) {
   }
   if (!shopifyConfigured()) {
     return json(
-      { ok: false, message: "Checkout is not connected. Your bag stays in this browser. No payment is taken on this preview." },
+      {
+        ok: false,
+        holding: true,
+        message: "Checkout is on hold. Your bag stays in this browser. No payment is taken.",
+      },
       503,
     );
   }

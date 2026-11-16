@@ -32,6 +32,10 @@ export function supabaseConfigured() {
   return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
+export function registrationOpen() {
+  return supabaseConfigured() || klaviyoConfigured();
+}
+
 export function rivoConfigured() {
   return Boolean(process.env.RIVO_API_KEY);
 }

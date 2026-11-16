@@ -15,19 +15,24 @@ export function CheckoutButton() {
       onSubmit={async (event) => {
         event.preventDefault();
         setPending(true);
-        const response = await fetch("/api/checkout", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ lines }),
-        });
-        const body = (await response.json()) as { message?: string; checkoutUrl?: string };
-        if (body.checkoutUrl) {
-          clear();
-          window.location.href = body.checkoutUrl;
-          return;
+        try {
+          const response = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ lines }),
+          });
+          const body = (await response.json().catch(() => null)) as { message?: string; checkoutUrl?: string } | null;
+          if (body?.checkoutUrl) {
+            clear();
+            window.location.href = body.checkoutUrl;
+            return;
+          }
+          setStatus(body?.message || "Checkout is on hold.");
+        } catch {
+          setStatus("Checkout is on hold.");
+        } finally {
+          setPending(false);
         }
-        setStatus(body.message || "Checkout is not available.");
-        setPending(false);
       }}
     >
       <button className="action" type="submit" disabled={pending}>
