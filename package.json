@@ -9,7 +9,7 @@
     "check:copy": "node scripts/check-copy.mjs"
   },
   "engines": {
-    "node": ">=20"
+    "node": "24.x"
   },
   "dependencies": {
     "next": "^15.5.4",

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -7,27 +7,36 @@ import { LaunchCapture } from "@/components/LaunchCapture";
 import { siteUrl } from "@/lib/catalog";
 import "./globals.css";
 
-const display = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
+const display = localFont({
+  src: [
+    { path: "../fonts/playfair-roman.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/playfair-roman.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/playfair-italic.woff2", weight: "400", style: "italic" },
+    { path: "../fonts/playfair-italic.woff2", weight: "500", style: "italic" },
+  ],
   variable: "--font-display",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
-const body = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
+const body = localFont({
+  src: [
+    { path: "../fonts/cormorant-roman.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/cormorant-italic.woff2", weight: "400", style: "italic" },
+  ],
   variable: "--font-body",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
-const label = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const label = localFont({
+  src: [
+    { path: "../fonts/dm-sans.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/dm-sans.woff2", weight: "500", style: "normal" },
+  ],
   variable: "--font-label",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
